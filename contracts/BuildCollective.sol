@@ -4,14 +4,21 @@ pragma experimental ABIEncoderV2;
 import "./Ownable.sol";
 
 contract BuildCollective is Ownable {
-  struct User {
+  struct User { 
     string username;
     uint256 balance;
     bool registered;
   }
 
-  mapping(address => User) private users;
+  struct Company {
+    string companyName;
+    uint256 balance;
+    User owner;
+    User[] employee;
+    bool registered;
+  }
 
+  mapping(address => User) private users;
   event UserSignedUp(address indexed userAddress, User indexed user);
 
   function user(address userAddress) public view returns (User memory) {
@@ -29,4 +36,31 @@ contract BuildCollective is Ownable {
     users[msg.sender].balance += amount;
     return true;
   }
+  mapping(string => Company) private companies;
+  mapping(address => Company) private employee;
+
+event CreateCompany(string indexed companyName, User indexed owner, Company indexed comp);
+
+  function createCompany(string memory companyName) public returns (Company memory) {
+    if(companies[companyName].registered == false){
+      companies[companyName].registered = true;
+      companies[companyName].name = companyName;
+      companies[companyName].owner = User.username;
+      companies[companyName].balance = 0;
+    }
+    emit CreateCompany(companyName, User.username, companies[companyName]);
+
+    return companies[companyName];
+  }
+
+ function addEmployee(string memory companyName, address newEmployee) public returns (Company memory){
+    require(users[msg.sender].registered); 
+    require(users[newEmployee].registered);
+    require(companies[companyName].registered); 
+    require(compareString(companies[companyName].owner.username, users[msg.sender].username)); 
+
+    members[newEmployee] = companies[companyName];
+  }
+
+
 }
