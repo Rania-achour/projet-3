@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lan= "en" and dir="Itr">
+<head>
+    <meta charset="utf-8">
+    <title>Interactive Login Form</title>
+    <link rel="stylesheet" href="page.css">
+    <script src = "page.js"></script>
+    <script src= "node_module/web3.js-browser/build/web3.min.js"></script>
+</head>
+<body>
+
+<form class= "box" action= "login.html" method= "POST">
+<h1>
+    login
+</h1>
+<input type="text" name= "" placeholder="Entrer le nom d'utilisateur" id="username" required>
+<input type="password" name= "" placeholder="Entrer le mot de passe" id="password" required>
+<input type="submit" id='submit' value='LOGIN' onclick="validate()" >
+                
+</form>
+ <div id="accounts">
+
+ </div>
+ <div id="nombreFavoris">
+
+ </div>
+<script>
+ let accounts = document.getElementById('accounts');
+     let nombreFavoris = document.getElementById('nombreFavoris');
+
+     const init = async() => {
+         let web3 = new web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+         web3.eth.getAccounts().then(function(allAccounts) {
+             for(let i = 0; i < allAccounts.length ; i++) {
+               accounts.innerHTML += allAccounts[i]+'<br />';
+         }
+        })
+    let contract = new web3.eth.contract ([
+{        
+        "inputs": [],
+        "name": "nbrFavoris",
+        "ouptut": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+    
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "uint256",
+            "name": "_nbrFavoris",
+            "type": "uint256"
+
+        }
+    ],
+    "name": "setNbrFavoris",
+    "ouputs": [],
+    "stateMutability": "nonpayable",
+    "type": "uint256"
+}
+]) "0x4973A1540842ed9ac815B7eFf8A7039E4cfd70E3");
+    async function getNbrFavoris() {
+        const leNbrFavoris = await contract.methods.nbrFavoris().call()
+        .then(receipt => {
+            nbrFavoris.innerHTML = receipt;
+        
+        })
+        .catch(error => {
+            alert('erreur !')
+        })
+        
+    }
+   
+    getNbrFavoris();
+}
+    init();
+</script>
+</body>
+</html>
