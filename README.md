@@ -59,4 +59,4 @@ newAccounts 3000000000000000000
 
 
 the rest of the code for the creation on the company you will find it in BuildCollection.sol
-on aussi creer le front avec html et css des page web pour le login des user et de l'entreprise
+on a aussi creer le front avec html et css des page web pour le login des user et de l'entreprise
